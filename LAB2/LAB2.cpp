@@ -96,18 +96,75 @@ public:
 
 	friend std::ostream& operator<< (std::ostream& os, IntArray2D& array)
 	{
-		for (int i = 0; i < array.rows(); ++i)
-		{
-			os << array.m_array[i] << " " << endl;
-		}
-		return os;
+		return array.to_stream(os);
 	};
 
 private:
 	IntArray* m_array;
 	size_t m_ammount_rows;
 	size_t m_ammount_columns;
+
+	virtual std::ostream& to_stream(std::ostream& os)
+    {
+        for (int i = 0; i < rows(); ++i)
+        {
+            os << m_array[i] << " " << std::endl;
+        }
+        return os;
+    }
 };
+
+class RightDiagonalArray2D : public IntArray2D
+{
+private:
+	std::ostream& to_stream(std::ostream& os) override
+    {
+        int n = rows();
+        int m = columns();
+
+        for (int k = 0; k < n + m - 1; ++k)
+        {
+            int i_start = std::max(0, k - m + 1);
+            int i_end = std::min(k, n - 1);
+
+            for (int i = i_start; i <= i_end; ++i)
+            {
+                int j = k - i;
+                // os << m_array[i][j] << " ";
+				os << get(i, j) << " ";
+            }
+            os << std::endl;
+        }
+
+        return os;
+    }
+};
+
+class LeftDiagonalArray2D : public IntArray2D {
+private:
+    std::ostream& to_stream(std::ostream& os) override
+    {
+        int n = rows();
+        int m = columns();
+
+        for (int k = 0; k < n + m - 1; ++k)
+        {
+            int j_start = std::max(0, k - n + 1);
+            int j_end = std::min(k, m - 1);
+
+            for (int j = j_start; j <= j_end; ++j)
+            {
+                int i = k - j;
+                // os << m_array[i][j] << " ";
+				os << get(i, j) << " ";
+            }
+            os << std::endl;
+        }
+
+        return os;
+    }
+};
+
 
 int main()
 {
