@@ -2,46 +2,47 @@
 #include <random>
 
 using std::unique_ptr;
-using std::random_device;
-using std::mt19937;
-using std::uniform_int_distribution;
 using std::cout;
-using std::endl;
 
-class IntArray
+class CIntArray
 {
 public:
-	IntArray(size_t size) : m_array(new int[size]), m_array_length(size) {};
-	IntArray() : m_array(nullptr), m_array_length(0) {};
+	// Конструкторы
+	CIntArray();
+	CIntArray(size_t size);
 
-	int get(size_t index)
+	// Геттеры
+	int getElement(size_t element)
 	{
-		return m_array[index];
-	};
+		return m_array[element];
+	}
 
-	void set(size_t index, int value)
-	{
-		m_array[index] = value;
-	};
-
-	size_t length()
+	size_t getLength()
 	{
 		return m_array_length;
 	};
 
-	static void random_fill(IntArray& array, uniform_int_distribution <int>& distribution, mt19937& generator)
+	// Сеттер
+	void setElement(size_t element, int value)
 	{
-		for (int i = 0; i < array.length(); ++i)
+		m_array[element] = value;
+	};
+
+	// Заполнитель
+	static void fillRandom(CIntArray& array, std::uniform_int_distribution <int>& distribution, std::mt19937& generator)
+	{
+		for (int i = 0; i < array.getLength(); ++i)
 		{
-			array.set(i, distribution(generator));
+			array.setElement(i, distribution(generator));
 		}
 	};
 
-	friend std::ostream& operator<< (std::ostream& os, IntArray& array)
+	// Перегрузка
+	friend std::ostream& operator<< (std::ostream& os, CIntArray& array)
 	{
-		for (int i = 0; i < array.length(); ++i)
+		for (int i = 0; i < array.getLength(); ++i)
 		{
-			os << array.get(i) << " ";
+			os << array.getElement(i) << " ";
 		}
 		return os;
 	}
@@ -51,79 +52,89 @@ private:
 	size_t m_array_length;
 };
 
-class IntArray2D
+CIntArray::CIntArray() : m_array(nullptr), m_array_length(0) {}
+CIntArray::CIntArray(size_t size) : m_array(new int[size]), m_array_length(size) {}
+
+class CIntArray2D
 {
 public:
-	IntArray2D(size_t rows, size_t columns) : m_ammount_rows(rows), m_ammount_columns(columns)
+	// Конструктор
+	CIntArray2D(size_t rows, size_t columns);
+
+	// Геттеры
+	size_t getColumns()
 	{
-		m_array = new IntArray[rows];
-		for (int i = 0; i < rows; ++i)
+		return m_array_columns;
+	};
+
+	size_t getRows()
+	{
+		return m_array_rows;
+	};
+
+	int getElement(size_t row, size_t column)
+	{
+		return m_array[row].getElement(column);
+	};
+
+	// Сеттер
+	void setElement(size_t row, size_t column, int value)
+	{
+		m_array[row].setElement(column, value);
+	};
+
+	// Заполнитель
+	static void fillRandom(CIntArray2D& array, std::uniform_int_distribution<int>& distribution, std::mt19937& generator)
+	{
+		for (int i = 0; i < array.getRows(); ++i)
 		{
-			m_array[i] = IntArray(columns);
-		};
-	};
-
-	size_t columns()
-	{
-		return m_ammount_columns;
-	};
-
-	size_t rows()
-	{
-		return m_ammount_rows;
-	};
-
-	int get(size_t row, size_t col)
-	{
-		return m_array[row].get(col);
-	};
-
-	void set(size_t row, size_t col, int value)
-	{
-		m_array[row].set(col, value);
-	};
-
-	static void random_fill(IntArray2D& array, uniform_int_distribution<int>& distribution, mt19937& generator)
-	{
-		for (int i = 0; i < array.rows(); ++i)
-		{
-			for (int j = 0; j < array.columns(); ++j)
+			for (int j = 0; j < array.getColumns(); ++j)
 			{
-				array.set(i, j, distribution(generator));
+				array.setElement(i, j, distribution(generator));
 			}
 		}
 	};
 
-	friend std::ostream& operator<< (std::ostream& os, IntArray2D& array)
+	// Перегрузка
+	friend std::ostream& operator<< (std::ostream& os, CIntArray2D& array)
 	{
-		for (int i = 0; i < array.rows(); ++i)
+		for (int i = 0; i < array.getRows(); ++i)
 		{
-			os << array.m_array[i] << " " << endl;
+			os << array.m_array[i] << "\n";
 		}
 		return os;
 	};
 
 private:
-	IntArray* m_array;
-	size_t m_ammount_rows;
-	size_t m_ammount_columns;
+	CIntArray* m_array;
+	size_t m_array_rows;
+	size_t m_array_columns;
 };
+
+CIntArray2D::CIntArray2D(size_t rows, size_t columns) : m_array_rows(rows), m_array_columns(columns)
+{
+	m_array = new CIntArray[rows];
+	for (int i = 0; i < rows; ++i)
+	{
+		m_array[i] = CIntArray(columns);
+	};
+}
 
 int main()
 {
-	random_device rd;
-	mt19937 generator(rd());
-	uniform_int_distribution<int> distribution(0, 9);
+	std::random_device rd;
+	std::mt19937 generator(rd());
+	std::uniform_int_distribution<int> distribution(0, 9);
 
-	IntArray array(10);
-	IntArray::random_fill(array, distribution, generator);
+	CIntArray array(10);
+	CIntArray::fillRandom(array, distribution, generator);
 
-	cout << array << endl << endl;
+	cout << array << "\n\n";
 
-	IntArray2D array2d(10, 5);
-	IntArray2D::random_fill(array2d, distribution, generator);
+	CIntArray2D array2d(5, 5);
+	CIntArray2D::fillRandom(array2d, distribution, generator);
 
-	cout << array2d << endl;
+	cout << array2d;
 
 	return 0;
 }
