@@ -1,5 +1,8 @@
 #include <iostream>
 
+#include "nlohmann/json.hpp"
+#include "pugixml/pugixml.hpp"
+
 using std::string;
 
 class CPerson
