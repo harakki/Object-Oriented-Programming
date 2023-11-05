@@ -1,13 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="LAB6.cpp" />
     <ClCompile Include="pugixml\pugixml.cpp">
       <Filter>pugixml</Filter>
     </ClCompile>
     <ClCompile Include="catch2\catch_amalgamated.cpp">
       <Filter>catch2</Filter>
     </ClCompile>
+    <ClCompile Include="LAB6.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pugixml\pugiconfig.hpp">
@@ -33,5 +33,11 @@
     <Filter Include="catch2">
       <UniqueIdentifier>{e21df2ef-0fe5-4390-9283-b635275a0473}</UniqueIdentifier>
     </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="Person.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Person.json" />
   </ItemGroup>
 </Project>

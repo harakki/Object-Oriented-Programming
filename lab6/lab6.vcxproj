@@ -137,6 +137,12 @@
     <ClInclude Include="pugixml\pugiconfig.hpp" />
     <ClInclude Include="pugixml\pugixml.hpp" />
   </ItemGroup>
+  <ItemGroup>
+    <Xml Include="Person.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Person.json" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
