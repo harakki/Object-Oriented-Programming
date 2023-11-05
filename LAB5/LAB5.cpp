@@ -4,6 +4,40 @@
 
 using std::string;
 
+class CException : public std::exception
+{
+  public:
+    virtual const char *what() const noexcept override
+    {
+        return m_error_message.c_str();
+    }
+
+  protected:
+    string getErrorMsg()
+    {
+        return m_error_message;
+    }
+
+    void setErrorMsg(const string &error_message)
+    {
+        m_error_message = error_message;
+    }
+
+  private:
+    string m_error_message;
+};
+
+class CRomanNumberException : public CException
+{
+  public:
+    CRomanNumberException(const string &errorMsg);
+};
+
+CRomanNumberException::CRomanNumberException(const string &errorMsg)
+{
+    setErrorMsg(errorMsg);
+}
+
 class CRomanNumber
 {
   public:
@@ -67,8 +101,7 @@ class CRomanNumber
 
     friend std::ostream &operator<<(std::ostream &out, const CRomanNumber &roman_number)
     {
-        out << convertToRoman(roman_number.m_number);
-        return out;
+        return out << convertToRoman(roman_number.m_number);
     }
 
   protected:
@@ -100,12 +133,11 @@ class CRomanNumber
     {
         if (decimal_number < 1 || decimal_number > 3999)
         {
-            // "Операция не разрешена."
-            throw (int)EPERM;
+            throw CRomanNumberException("The result is out of the range of acceptable values!");
         }
         else
         {
-            return (unsigned short)decimal_number;
+            return decimal_number;
         }
     }
 };
@@ -125,52 +157,6 @@ CRomanNumber::CRomanNumber(const CRomanNumber &copy)
     m_number = copy.m_number;
 };
 
-// class CException : public std::exception
-// {
-//   public:
-//     virtual const char *what() noexcept = 0;
-//
-//   protected:
-//     int getErrorCode()
-//     {
-//         return m_error_code;
-//     }
-//
-//     void setErrorCode(int error_code)
-//     {
-//         m_error_code = error_code;
-//     }
-//
-//   private:
-//     int m_error_code;
-// };
-
-// class CRomanNumberException : public CException
-// {
-//   public:
-//     CRomanNumberException(int error_code);
-//
-//     const char *what() noexcept override
-//     {
-//         string message;
-//         if (getErrorCode() == EPERM)
-//         {
-//             message = "The result went beyond the range of acceptable numbers!";
-//             std::cerr << "Error: " << message << std::endl;
-//         }
-//         else
-//         {
-//             message = "Unknown error";
-//             std::cerr << "Error: " << message << std::endl;
-//         }
-//     }
-// };
-//
-// CRomanNumberException::CRomanNumberException(int errorCode)
-// {
-//     setErrorCode(errorCode);
-// }
-
 int main()
 {
 
@@ -180,12 +166,28 @@ int main()
     try
     {
         std::cout << (romanNumb_970 - romanNumb_700) << std::endl;
+    }
+    catch (const CRomanNumberException &exc)
+    {
+        std::cerr << "Error: " << exc.what() << std::endl;
+    }
+
+    try
+    {
         std::cout << (romanNumb_700 - romanNumb_970) << std::endl;
+    }
+    catch (const CRomanNumberException &exc)
+    {
+        std::cerr << "Error: " << exc.what() << std::endl;
+    }
+
+    try
+    {
         std::cout << (romanNumb_970 - romanNumb_700) << std::endl;
     }
-    catch (const int &err_msg)
+    catch (const CRomanNumberException &exc)
     {
-        std::cerr << "ERR: " << err_msg << std::endl;
+        std::cerr << "Error: " << exc.what() << std::endl;
     }
 
     return 0;
