@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Сторонние библиотеки">
+      <UniqueIdentifier>{11f616c4-5ca2-431f-96d3-c9312549459b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Сторонние библиотеки\catch2">
+      <UniqueIdentifier>{41084425-8afe-41e7-b2e4-a69116c29c80}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="catch_tests.cpp" />
+    <ClCompile Include="include\catch2\catch_amalgamated.cpp">
+      <Filter>Сторонние библиотеки\catch2</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\catch2\catch_amalgamated.hpp">
+      <Filter>Сторонние библиотеки\catch2</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

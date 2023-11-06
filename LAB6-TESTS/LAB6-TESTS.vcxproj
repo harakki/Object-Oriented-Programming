@@ -18,11 +18,18 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="catch_tests.cpp" />
+    <ClCompile Include="include\catch2\catch_amalgamated.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\catch2\catch_amalgamated.hpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{f69e0bea-aeb5-4f58-a3d2-1cd7f1098756}</ProjectGuid>
-    <RootNamespace>LAB5</RootNamespace>
+    <ProjectGuid>{6512089e-0826-4390-9dde-3e73a84dd3b7}</ProjectGuid>
+    <RootNamespace>LAB6TESTS</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -126,17 +133,6 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="src\classes\CException.cpp" />
-    <ClCompile Include="src\classes\CRomanNumber.cpp" />
-    <ClCompile Include="src\classes\CRomanNumberException.cpp" />
-    <ClCompile Include="src\LAB5.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="src\classes\CException.hpp" />
-    <ClInclude Include="src\classes\CRomanNumber.hpp" />
-    <ClInclude Include="src\classes\CRomanNumberException.hpp" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

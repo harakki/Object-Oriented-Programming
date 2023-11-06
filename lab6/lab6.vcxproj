@@ -127,15 +127,25 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="catch2\catch_amalgamated.cpp" />
-    <ClCompile Include="LAB6.cpp" />
-    <ClCompile Include="pugixml\pugixml.cpp" />
+    <ClCompile Include="include\pugixml\pugixml.cpp" />
+    <ClCompile Include="src\classes\CJSONLoader.cpp" />
+    <ClCompile Include="src\classes\CJSONPersonLoaderFactory.cpp" />
+    <ClCompile Include="src\classes\CPerson.cpp" />
+    <ClCompile Include="src\classes\CXMLLoader.cpp" />
+    <ClCompile Include="src\classes\CXMLLoader.hpp" />
+    <ClCompile Include="src\classes\CXMLPersonLoaderFactory.cpp" />
+    <ClCompile Include="src\LAB6.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="catch2\catch_amalgamated.hpp" />
-    <ClInclude Include="nlohmann\json.hpp" />
-    <ClInclude Include="pugixml\pugiconfig.hpp" />
-    <ClInclude Include="pugixml\pugixml.hpp" />
+    <ClInclude Include="include\nlohmann\json.hpp" />
+    <ClInclude Include="include\pugixml\pugiconfig.hpp" />
+    <ClInclude Include="include\pugixml\pugixml.hpp" />
+    <ClInclude Include="src\classes\CAbstractPersonLoader.hpp" />
+    <ClInclude Include="src\classes\CAbstractPersonLoaderFactory.hpp" />
+    <ClInclude Include="src\classes\CJSONPersonLoaderFactory.hpp" />
+    <ClInclude Include="src\classes\CPerson.hpp" />
+    <ClInclude Include="src\classes\CJSONLoader.hpp" />
+    <ClInclude Include="src\classes\CXMLPersonLoaderFactory.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="Person.xml" />

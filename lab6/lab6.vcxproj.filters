@@ -1,37 +1,70 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="pugixml\pugixml.cpp">
-      <Filter>pugixml</Filter>
+    <ClCompile Include="src\classes\CJSONLoader.cpp">
+      <Filter>Классы</Filter>
     </ClCompile>
-    <ClCompile Include="catch2\catch_amalgamated.cpp">
-      <Filter>catch2</Filter>
+    <ClCompile Include="src\classes\CJSONPersonLoaderFactory.cpp">
+      <Filter>Классы</Filter>
     </ClCompile>
-    <ClCompile Include="LAB6.cpp" />
+    <ClCompile Include="src\classes\CPerson.cpp">
+      <Filter>Классы</Filter>
+    </ClCompile>
+    <ClCompile Include="src\classes\CXMLLoader.cpp">
+      <Filter>Классы</Filter>
+    </ClCompile>
+    <ClCompile Include="src\classes\CXMLLoader.hpp">
+      <Filter>Классы</Filter>
+    </ClCompile>
+    <ClCompile Include="src\classes\CXMLPersonLoaderFactory.cpp">
+      <Filter>Классы</Filter>
+    </ClCompile>
+    <ClCompile Include="src\LAB6.cpp" />
+    <ClCompile Include="include\pugixml\pugixml.cpp">
+      <Filter>Сторонние библиотеки\pugixml</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="pugixml\pugiconfig.hpp">
-      <Filter>pugixml</Filter>
+    <ClInclude Include="src\classes\CAbstractPersonLoader.hpp">
+      <Filter>Классы</Filter>
     </ClInclude>
-    <ClInclude Include="pugixml\pugixml.hpp">
-      <Filter>pugixml</Filter>
+    <ClInclude Include="src\classes\CAbstractPersonLoaderFactory.hpp">
+      <Filter>Классы</Filter>
     </ClInclude>
-    <ClInclude Include="nlohmann\json.hpp">
-      <Filter>nlohmann</Filter>
+    <ClInclude Include="src\classes\CJSONLoader.hpp">
+      <Filter>Классы</Filter>
     </ClInclude>
-    <ClInclude Include="catch2\catch_amalgamated.hpp">
-      <Filter>catch2</Filter>
+    <ClInclude Include="src\classes\CJSONPersonLoaderFactory.hpp">
+      <Filter>Классы</Filter>
+    </ClInclude>
+    <ClInclude Include="src\classes\CPerson.hpp">
+      <Filter>Классы</Filter>
+    </ClInclude>
+    <ClInclude Include="src\classes\CXMLPersonLoaderFactory.hpp">
+      <Filter>Классы</Filter>
+    </ClInclude>
+    <ClInclude Include="include\nlohmann\json.hpp">
+      <Filter>Сторонние библиотеки\nlohmann</Filter>
+    </ClInclude>
+    <ClInclude Include="include\pugixml\pugiconfig.hpp">
+      <Filter>Сторонние библиотеки\pugixml</Filter>
+    </ClInclude>
+    <ClInclude Include="include\pugixml\pugixml.hpp">
+      <Filter>Сторонние библиотеки\pugixml</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Filter Include="pugixml">
-      <UniqueIdentifier>{518f0a6e-9b71-47a4-8984-00f44f2fee38}</UniqueIdentifier>
+    <Filter Include="Сторонние библиотеки">
+      <UniqueIdentifier>{044cb79d-f13c-4696-a927-eb67e6820383}</UniqueIdentifier>
     </Filter>
-    <Filter Include="nlohmann">
+    <Filter Include="Сторонние библиотеки\nlohmann">
       <UniqueIdentifier>{4eb5f0d8-a8fb-4a6b-b922-0392217f62d9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="catch2">
-      <UniqueIdentifier>{e21df2ef-0fe5-4390-9283-b635275a0473}</UniqueIdentifier>
+    <Filter Include="Сторонние библиотеки\pugixml">
+      <UniqueIdentifier>{518f0a6e-9b71-47a4-8984-00f44f2fee38}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Классы">
+      <UniqueIdentifier>{f9cbf0cf-a9de-4912-8730-65838d858c45}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

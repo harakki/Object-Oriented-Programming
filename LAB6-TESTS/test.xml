@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<people>
+  <person>
+    <_first_name>Biba</_first_name>
+    <_last_name>Boba</_last_name>
+    <age>20</age>
+  </person>
+  <person>
+    <_first_name>Boba</_first_name>
+    <_last_name>Biba</_last_name>
+  </person>
+</people>

@@ -1,19 +1,31 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="LAB5.cpp" />
-    <ClCompile Include="catch2\catch_amalgamated.cpp">
-      <Filter>catch2</Filter>
+    <ClCompile Include="src\LAB5.cpp" />
+    <ClCompile Include="src\classes\CException.cpp">
+      <Filter>Классы</Filter>
+    </ClCompile>
+    <ClCompile Include="src\classes\CRomanNumber.cpp">
+      <Filter>Классы</Filter>
+    </ClCompile>
+    <ClCompile Include="src\classes\CRomanNumberException.cpp">
+      <Filter>Классы</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Filter Include="catch2">
-      <UniqueIdentifier>{ad241c8b-2d3e-4cf2-b656-2f5757bf8e89}</UniqueIdentifier>
-    </Filter>
+    <ClInclude Include="src\classes\CException.hpp">
+      <Filter>Классы</Filter>
+    </ClInclude>
+    <ClInclude Include="src\classes\CRomanNumber.hpp">
+      <Filter>Классы</Filter>
+    </ClInclude>
+    <ClInclude Include="src\classes\CRomanNumberException.hpp">
+      <Filter>Классы</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="catch2\catch_amalgamated.hpp">
-      <Filter>catch2</Filter>
-    </ClInclude>
+    <Filter Include="Классы">
+      <UniqueIdentifier>{f35254e5-39cc-4628-9acc-069fcb2ae4fa}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>
