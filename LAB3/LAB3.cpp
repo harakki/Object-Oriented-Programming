@@ -3,180 +3,301 @@
 // key   - уникальное значение
 // value - данные, которые могут повторяться
 
-class CAVLTree
+using std::unique_ptr;
+
+template <typename key>
+concept comparable = requires(key item) { item < item; };
+
+template <comparable key, typename value> class CDictionary
 {
   public:
-    void tree_avl_add(int data)
+    CDictionary();
+
+    value &operator[](const key &key)
     {
-        tree_avl_add_internal(m_root, data);
+        return getValue(root, key);
+    }
+
+    bool empty() const
+    {
+        return m_count == 0;
+    }
+
+    int size() const
+    {
+        return m_count;
+    }
+
+    void clear()
+    {
+        deleteAllVertexes(root);
+        m_count = 0;
+    }
+
+    value erase(const key &key)
+    {
+        value value;
+        deleteVertex(root, key, value);
+        return value;
+    }
+
+    value find(const key &key)
+    {
+        return findValue(root, key);
+    }
+
+    bool contains(const key &key)
+    {
+        return containsKey(root, key);
     }
 
   private:
-    struct Node
+    struct Tree
     {
-        int data;
+        key m_key;
+        value m_value;
 
-        int balance_factor;
+        int m_height;
 
-        std::unique_ptr<Node> left;
-        std::unique_ptr<Node> right;
+        unique_ptr<Tree> m_left;
+        unique_ptr<Tree> m_right;
 
-        Node(int val) : data(val), balance_factor(0), left(nullptr), right(nullptr)
+        Tree(const key &key, const value &value)
         {
+            m_key = key;
+            m_value = value;
+
+            m_height = 1;
+
+            m_left = nullptr;
+            m_right = nullptr;
         }
     };
 
-    std::unique_ptr<Node> m_root;
-    int m_growth;
+    int m_count;
+    unique_ptr<Tree> root;
 
-    void tree_avl_add_internal(std::unique_ptr<Node> &node, int data)
+    int getHeight(unique_ptr<Tree> &node)
     {
         if (node == nullptr)
         {
-            node = std::make_unique<Node>(data);
-            m_growth = true;
+            return 0;
         }
-        else if (node->data > data)
-        {
-            tree_avl_add_internal(node->left, data);
+        return node->m_height;
+    }
 
-            if (m_growth)
+    int getBalanceFactor(unique_ptr<Tree> &node)
+    {
+        if (node == nullptr)
+        {
+            return 0;
+        }
+        return getHeight(node->m_left) - getHeight(node->m_right);
+    }
+
+    void fixHeight(unique_ptr<Tree> &node)
+    {
+        if (node != nullptr)
+        {
+            node->m_height = 1 + std::max(getHeight(node->m_left), getHeight(node->m_right));
+        }
+    }
+
+    void rotateLeft(unique_ptr<Tree> &node)
+    {
+        unique_ptr<Tree> new_root = std::move(node->m_right);
+        node->m_right = std::move(new_root->m_left);
+        new_root->m_left = std::move(node);
+        fixHeight(new_root);
+        node = std::move(new_root); 
+    }
+
+    void rotateRight(unique_ptr<Tree> &node)
+    {
+        unique_ptr<Tree> new_root = std::move(node->m_left);
+        node->m_left = std::move(new_root->m_right);
+        new_root->m_right = std::move(node);
+        fixHeight(new_root);
+        node = std::move(new_root);
+    }
+
+    void balance(unique_ptr<Tree> &node)
+    {
+        if (node != nullptr)
+        {
+            fixHeight(node);
+            int balance_factor = getBalanceFactor(node);
+
+            if (balance_factor > 1)
             {
-                if (node->balance_factor > 0)
+                if (getBalanceFactor(node->m_left) < 0)
                 {
-                    node->balance_factor = 0;
-                    m_growth = false;
+                    rotateLeft(node->m_left);
                 }
-                else if (node->balance_factor == 0)
+                rotateRight(node);
+            }
+
+            else if (balance_factor < -1)
+            {
+                if (getBalanceFactor(node->m_right) > 0)
                 {
-                    node->balance_factor = -1;
-                    m_growth = true;
+                    rotateRight(node->m_right);
                 }
-                else
-                {
-                    if (node->left->balance_factor < 0)
-                    {
-                        tree_avl_rotate_LL(node);
-                        m_growth = false;
-                    }
-                    else
-                    {
-                        tree_avl_rotate_LR(node);
-                        m_growth = false;
-                    }
-                }
+                rotateLeft(node);
             }
         }
-        else if (node->data < data)
-        {
-            tree_avl_add_internal(node->right, data);
+    };
 
-            if (m_growth)
+    value &getValue(unique_ptr<Tree> &node, const key &key)
+    {
+        if (node == nullptr)
+        {
+            node = make_unique<Tree>(key, value());
+            m_count++;
+        }
+
+        else if (key < node->m_key)
+            return getValue(node->m_left, key);
+
+        else if (key > node->m_key)
+            return getValue(node->m_right, key);
+
+        return node->m_value;
+    }
+
+    unique_ptr<Tree> &getLeftmost(unique_ptr<Tree> &node)
+    {
+        if (node && node->m_left)
+            return getLeftmost(node->m_left);
+
+        return node;
+    }
+
+    void deleteVertex(unique_ptr<Tree> &node, const key &key, value &value)
+    {
+        if (!node)
+        {
+            return;
+        }
+
+        if (key < node->m_key)
+            deleteVertex(node->m_left, key, value);
+
+        else if (key > node->m_key)
+            deleteVertex(node->m_right, key, value);
+
+        else
+        {
+            value = node->m_value;
+
+            if (!node->m_left && !node->m_right)
+                node.reset();
+
+            else if (node->m_left && !node->m_right)
+                node = std::move(node->m_left);
+
+            else if (!node->m_left && node->m_right)
+                node = std::move(node->m_right);
+
+            else
             {
-                if (node->balance_factor < 0)
-                {
-                    node->balance_factor = 0;
-                    m_growth = false;
-                }
-                else if (node->balance_factor == 0)
-                {
-                    node->balance_factor = 1;
-                    m_growth = true;
-                }
-                else
-                {
-                    if (node->right->balance_factor > 0)
-                    {
-                        tree_avl_rotate_RR(node);
-                        m_growth = false;
-                    }
-                    else
-                    {
-                        tree_avl_rotate_RL(node);
-                        m_growth = false;
-                    }
-                }
+                unique_ptr<Tree> &leftmost = getLeftmost(node->m_right);
+                leftmost->m_left = std::move(node->m_left);
+                leftmost->m_right = std::move(node->m_right);
+
+                node = std::move(leftmost);
             }
+
+            m_count--;
+        }
+
+        balance(node);
+    }
+
+    value &findValue(unique_ptr<Tree> &node, const key &key)
+    {
+        if (!node)
+        {
+            throw "Key is not found!";
+        }
+
+        if (key < node->m_key)
+        {
+            return findValue(node->m_left, key);
+        }
+
+        else if (key > node->m_key)
+        {
+            return findValue(node->m_right, key);
+        }
+
+        return node->m_value;
+    }
+
+    bool containsKey(unique_ptr<Tree> &node, const key &key)
+    {
+        if (!node)
+        {
+            return false;
+        }
+
+        if (key == node->m_key)
+        {
+            return true;
+        }
+
+        if (key < node->m_key)
+        {
+            return containsKey(node->m_left, key);
         }
         else
         {
-            // Вершина уже в дереве
+            return containsKey(node->m_right, key);
         }
     }
 
-    void tree_avl_rotate_LL(std::unique_ptr<Node> &node)
+    void deleteAllVertexes(unique_ptr<Tree> &node)
     {
-        std::unique_ptr<Node> new_root = std::move(node->left);
-        node->left = std::move(new_root->right);
-        new_root->right = std::move(node);
-        node = std::move(new_root);
-
-        node->right->balance_factor = 0;
-        node->balance_factor = 0;
-    }
-
-    void tree_avl_rotate_RR(std::unique_ptr<Node> &node)
-    {
-        std::unique_ptr<Node> new_root = std::move(node->right);
-        node->right = std::move(new_root->left);
-        new_root->left = std::move(node);
-        node = std::move(new_root);
-
-        node->left->balance_factor = 0;
-        node->balance_factor = 0;
-    }
-
-    void tree_avl_rotate_LR(std::unique_ptr<Node> &node)
-    {
-        tree_avl_rotate_RR(node->left);
-        tree_avl_rotate_LL(node);
-    }
-
-    void tree_avl_rotate_RL(std::unique_ptr<Node> &node)
-    {
-        tree_avl_rotate_LL(node->right);
-        tree_avl_rotate_RR(node);
+        if (node != nullptr)
+        {
+            deleteAllVertexes(node->m_left);
+            deleteAllVertexes(node->m_right);
+            node.reset();
+        }
     }
 };
 
-//template <typename key, typename value> class CDictionary /*: protected CAVLTree*/
-//{
-//  public:
-//    CDictionary();
-//
-//    value &operator[](const key &key)
-//    {
-//    }
-//
-//    bool empty() const
-//    {
-//    }
-//
-//    int size() const
-//    {
-//    }
-//
-//    void clear()
-//    {
-//    }
-//
-//    value erase(key &key)
-//    {
-//    }
-//    value find(key &key)
-//    {
-//    }
-//
-//    bool contains(key &key)
-//    {
-//    }
-//};
-//
-//template <typename key, typename value> CDictionary<key, value>::CDictionary()
-//{
-//}
+template <comparable key, typename value> CDictionary<key, value>::CDictionary()
+{
+    m_count = 0;
+}
 
 int main()
 {
+    CDictionary<int, std::string> dictionary;
+
+    dictionary[0] = "aaaaaa";
+    dictionary[1] = "ok.";
+    dictionary[2] = "qq";
+
+    std::cout << "[0]: " << dictionary[0] << std::endl
+              << "[1]: " << dictionary[1] << std::endl
+              << "[2]: " << dictionary[2] << std::endl
+              << std::endl;
+
+     std::cout << "Search at [0]: " << dictionary.find(0) << std::endl
+              << "Delete at [1]: " << dictionary.erase(1) << std::endl
+              << "Contains at [1]: " << dictionary.contains(1) << std::endl
+              << "Is empty: " << dictionary.empty() << std::endl
+              << "Size: " << dictionary.size() << std::endl;
+
+    dictionary.clear();
+
+    std::cout << std::endl
+              << std::endl
+              << "After clearing" << std::endl
+              << "Is empty: " << dictionary.empty() << std::endl
+              << "Size: " << dictionary.size() << std::endl;
+
     return 0;
 }
