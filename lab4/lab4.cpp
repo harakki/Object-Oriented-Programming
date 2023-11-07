@@ -1,9 +1,6 @@
 ﻿#include <iostream>
 #include <stack>
 
-// key   - уникальное значение
-// value - данные, которые могут повторяться
-
 using std::unique_ptr;
 
 template <typename key>
@@ -55,44 +52,42 @@ template <comparable key, typename value> class CDictionary
     class CIterator
     {
       public:
-        CIterator(CDictionary<key, value> &dictionary) : dictionary(dictionary)
+        CIterator(CDictionary<key, value> &dictionary, bool beginFromStart) : dictionary(dictionary)
         {
-            // Инициализация итератора
-            current = dictionary.root.get();
+            if (beginFromStart)
+            {
+                current = dictionary.root.get();
 
-            // Перемещение влево до самого левого узла
-            pushLeftNodes(current);
+                pushLeftNodes(current);
+            }
+            else
+            {
+                current = nullptr;
+            }
         }
 
         // Операторы для перемещения итератора
         CIterator &operator++()
         {
-            if (!stack.empty() || current)
+            if (!stack.empty())
             {
-                if (current->m_right)
+                stack.pop();
+                pushLeftNodes(current->m_right.get());
+                if (!stack.empty())
                 {
-                    current = std::move(current->m_right.get());
-
-                    while (current && current->m_left)
-                    {
-                        pushLeftNodes(current);
-                    }
+                    current = stack.top();
                 }
                 else
                 {
-                    if (!stack.empty())
-                    {
-                        current = stack.top();
-                        stack.pop();
-                    }
-                    else
-                    {
-                        current = nullptr;
-                    }
+                    current = nullptr;
                 }
             }
-
             return *this;
+        }
+
+        bool operator==(const CIterator &other) const
+        {
+            return current == other.current;
         }
 
         bool operator!=(const CIterator &other) const
@@ -116,20 +111,20 @@ template <comparable key, typename value> class CDictionary
             while (node != nullptr)
             {
                 stack.push(node);
-                node = std::move(node->m_left.get());
+                node = node->m_left.get();
             }
         }
     };
 
-    // Методы для получения начального итератора и итератора конца
+    // Получение начального и конечного итератора
     CIterator begin()
     {
-        return CIterator(*this);
+        return CIterator(*this, true);
     }
 
     CIterator end()
     {
-        return CIterator(*this);
+        return CIterator(*this, false);
     }
 
   protected:
