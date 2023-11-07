@@ -133,6 +133,11 @@
   <ItemGroup>
     <ClInclude Include="include\catch2\catch_amalgamated.hpp" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\LAB5\LAB5.vcxproj">
+      <Project>{f69e0bea-aeb5-4f58-a3d2-1cd7f1098756}</Project>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

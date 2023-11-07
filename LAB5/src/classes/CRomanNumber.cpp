@@ -109,7 +109,7 @@ CRomanNumber::CRomanNumber()
 
 CRomanNumber::CRomanNumber(unsigned short input_number)
 {
-    m_number = input_number;
+    m_number = permissionForOperation(input_number);
 };
 
 CRomanNumber::CRomanNumber(const CRomanNumber &copy)
